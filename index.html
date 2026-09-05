@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SoltaniBoard — Le Tableau Blanc Interactif Nouvelle Génération</title>
-  <meta name="description" content="SoltaniBoard est la suite pédagogique interactive pour professeurs de mathématiques, physique-chimie et sciences. Géométrie magnétique, traceur de courbes, Casio fx-991ES, GeoGebra et simulateurs." />
+  <title>SoltaniBoard PRO — Le Tableau Blanc Interactif pour Enseignants de Sciences</title>
+  <meta name="description" content="SoltaniBoard PRO : Tableau blanc et noir interactif ultra-fluide pour professeurs de maths et sciences. Traceur f(x), Casio fx-991ES, GeoGebra, géométrie magnétique et simulateurs de physique-chimie." />
   <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico" />
   
-  <!-- Google Fonts & Font Awesome Icons -->
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   
+  <!-- AOS (Animate on Scroll) CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -22,15 +25,18 @@
         extend: {
           colors: {
             brand: {
+              50: '#f0f9ff',
+              400: '#38bdf8',
               500: '#0ea5e9',
               600: '#0284c7',
-              dark: '#070d1e',
-              card: '#0e1738'
+              dark: '#060b19',
+              card: '#0c1533'
             }
           },
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            display: ['"Outfit"', 'sans-serif']
+            display: ['"Outfit"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace']
           }
         }
       }
@@ -38,291 +44,361 @@
   </script>
 
   <style>
+    /* Custom dynamic effects */
     .gradient-text {
       background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .gradient-bg {
-      background: radial-gradient(circle at 50% -20%, rgba(14, 165, 233, 0.18), transparent 70%),
-                  radial-gradient(circle at 100% 40%, rgba(139, 92, 246, 0.12), transparent 50%),
-                  #070d1e;
+    .hero-glow {
+      background: radial-gradient(circle at 50% -10%, rgba(14, 165, 233, 0.22), transparent 60%),
+                  radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 50%),
+                  radial-gradient(circle at 15% 70%, rgba(16, 185, 129, 0.1), transparent 50%),
+                  #060b19;
     }
     .glass-card {
-      background: rgba(14, 23, 56, 0.7);
+      background: rgba(12, 21, 51, 0.65);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .glass-card:hover {
-      border-color: rgba(56, 189, 248, 0.4);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 30px -10px rgba(14, 165, 233, 0.2);
+      border-color: rgba(56, 189, 248, 0.45);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(14, 165, 233, 0.25);
     }
     .glow-btn {
-      box-shadow: 0 0 25px rgba(14, 165, 233, 0.4);
+      box-shadow: 0 0 25px rgba(14, 165, 233, 0.45);
     }
     .glow-btn:hover {
-      box-shadow: 0 0 35px rgba(14, 165, 233, 0.7);
+      box-shadow: 0 0 40px rgba(14, 165, 233, 0.75);
     }
     .glow-wa {
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
     }
     .glow-wa:hover {
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+      box-shadow: 0 0 40px rgba(16, 185, 129, 0.7);
     }
-    .gallery-tab.active {
+    .tab-btn.active {
       background: linear-gradient(135deg, #0ea5e9, #2563eb);
       color: #ffffff;
       border-color: #38bdf8;
-      box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+      box-shadow: 0 0 25px rgba(14, 165, 233, 0.5);
+    }
+    /* Typing cursor */
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    
+    /* Floating animated elements */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(1.5deg); }
+    }
+    .animate-float {
+      animation: floatSlow 5s ease-in-out infinite;
+    }
+    .animate-float-delay {
+      animation: floatSlow 6s ease-in-out 2.5s infinite;
     }
   </style>
 </head>
 
-<body class="bg-[#070d1e] text-slate-200 font-sans antialiased overflow-x-hidden">
+<body class="bg-[#060b19] text-slate-200 font-sans antialiased overflow-x-hidden selection:bg-sky-500 selection:text-white">
+
+  <!-- LIGHTBOX MODAL POUR ZOOM PLEIN ÉCRAN DES PHOTOS -->
+  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4" onclick="closeLightbox()">
+    <button class="absolute top-6 right-6 text-white/80 hover:text-white text-3xl p-2 z-10" onclick="closeLightbox()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="relative max-w-6xl max-h-[90vh] w-full" onclick="event.stopPropagation()">
+      <img id="lightbox-img" src="" alt="Capture plein écran" class="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-slate-700" />
+      <div id="lightbox-caption" class="mt-3 text-center text-sm font-semibold text-slate-300"></div>
+    </div>
+  </div>
 
   <!-- NAVBAR -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-[#070d1e]/90 backdrop-blur-xl border-b border-slate-800/80 transition-all">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#060b19]/85 backdrop-blur-xl border-b border-slate-800/80 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
       <!-- Logo -->
-      <a href="#" class="flex items-center gap-3 group">
-        <img src="assets/images/app_logo.png" alt="SoltaniBoard Logo" class="w-11 h-11 drop-shadow-md group-hover:scale-105 transition-transform" />
+      <a href="#" class="flex items-center gap-3.5 group">
+        <div class="relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-sky-500 to-indigo-500 rounded-xl blur-sm opacity-50 group-hover:opacity-100 transition-opacity"></div>
+          <img src="assets/images/app_logo.png" alt="SoltaniBoard" class="relative w-11 h-11 drop-shadow-md group-hover:scale-105 transition-transform" />
+        </div>
         <div class="flex flex-col">
-          <span class="font-display font-extrabold text-2xl tracking-tight text-white flex items-center gap-1.5">
+          <span class="font-display font-extrabold text-2xl tracking-tight text-white flex items-center gap-2">
             Soltani<span class="text-sky-400">Board</span>
-            <span class="text-[10px] uppercase font-bold tracking-widest bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full border border-sky-500/30">PRO</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest bg-gradient-to-r from-sky-500/20 to-indigo-500/20 text-sky-300 px-2.5 py-0.5 rounded-full border border-sky-400/30">PRO</span>
           </span>
           <span class="text-xs text-slate-400 font-medium">Tableau Blanc Interactif & Scientifique</span>
         </div>
       </a>
 
-      <!-- Desktop Nav Links -->
+      <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
-        <a href="#demo-gallery" class="hover:text-sky-400 transition-colors flex items-center gap-1.5">
-          <i class="fa-solid fa-images text-sky-400"></i> Captures du Logiciel
+        <a href="#gallery" class="hover:text-sky-400 transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles text-sky-400 text-xs"></i> Démonstration
         </a>
-        <a href="#features" class="hover:text-sky-400 transition-colors">Outils Pédagogiques</a>
-        <a href="#science-tools" class="hover:text-sky-400 transition-colors">Maths & Physique</a>
-        <a href="#licence" class="hover:text-sky-400 transition-colors">Activation Licence</a>
-        <a href="#support" class="hover:text-sky-400 transition-colors">Contact Support</a>
+        <a href="#interactive-preview" class="hover:text-sky-400 transition-colors">Simulateur f(x)</a>
+        <a href="#features" class="hover:text-sky-400 transition-colors">Outils Intégrés</a>
+        <a href="#licence" class="hover:text-sky-400 transition-colors">Activation</a>
+        <a href="#faq" class="hover:text-sky-400 transition-colors">FAQ</a>
       </nav>
 
-      <!-- CTA Buttons -->
-      <div class="hidden sm:flex items-center gap-3">
-        <a href="https://wa.me/21629403406?text=Bonjour%20professeur,%20je%20souhaite%20des%20informations%20sur%20SoltaniBoard" target="_blank" class="px-4 py-2 text-sm font-semibold rounded-xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/25 transition-all glow-wa flex items-center gap-2">
+      <!-- Action Buttons -->
+      <div class="hidden sm:flex items-center gap-3.5">
+        <a href="https://wa.me/21629403406?text=Bonjour%20professeur,%20je%20souhaite%20des%20renseignements%20sur%20SoltaniBoard" target="_blank" class="px-4 py-2.5 text-sm font-semibold rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition-all glow-wa flex items-center gap-2">
           <i class="fa-brands fa-whatsapp text-lg"></i>
-          <span>Support WhatsApp</span>
+          <span>WhatsApp Support</span>
         </a>
-        <a href="https://github.com/adelprofmath-cloud/soltaniboard/releases/download/v2.5/Setup_SoltaniBoard.exe" class="px-5 py-2.5 text-sm font-bold rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:from-sky-400 hover:to-blue-500 transition-all glow-btn flex items-center gap-2">
-          <i class="fa-solid fa-download"></i>
-          <span>Télécharger Setup</span>
+        <a href="https://github.com/adelprofmath-cloud/soltaniboard/releases/download/v2.5/Setup_SoltaniBoard.exe" class="px-5 py-2.5 text-sm font-bold rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 text-white hover:from-sky-400 hover:to-indigo-500 transition-all glow-btn flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-down"></i>
+          <span>Télécharger</span>
         </a>
       </div>
 
-      <!-- Mobile Button -->
+      <!-- Mobile Hamburger Button -->
       <button id="mobileMenuBtn" class="lg:hidden text-slate-300 hover:text-white p-2 text-xl" aria-label="Menu">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
 
     <!-- Mobile Dropdown -->
-    <div id="mobileMenu" class="hidden lg:hidden bg-[#0c142c] border-b border-slate-800 px-6 py-5 flex flex-col gap-4 text-base font-medium">
-      <a href="#demo-gallery" class="text-slate-300 hover:text-sky-400">Captures du Logiciel</a>
-      <a href="#features" class="text-slate-300 hover:text-sky-400">Outils Pédagogiques</a>
-      <a href="#science-tools" class="text-slate-300 hover:text-sky-400">Maths & Physique</a>
-      <a href="#licence" class="text-slate-300 hover:text-sky-400">Activation Licence</a>
-      <a href="#support" class="text-slate-300 hover:text-sky-400">Contact Support</a>
+    <div id="mobileMenu" class="hidden lg:hidden bg-[#0a1128] border-b border-slate-800 px-6 py-5 flex flex-col gap-4 text-base font-medium">
+      <a href="#gallery" class="text-slate-300 hover:text-sky-400">Démonstration & Photos</a>
+      <a href="#interactive-preview" class="text-slate-300 hover:text-sky-400">Simulateur f(x)</a>
+      <a href="#features" class="text-slate-300 hover:text-sky-400">Outils Intégrés</a>
+      <a href="#licence" class="text-slate-300 hover:text-sky-400">Activation</a>
+      <a href="#faq" class="text-slate-300 hover:text-sky-400">FAQ & Support</a>
       <div class="pt-3 flex flex-col gap-2.5">
         <a href="https://github.com/adelprofmath-cloud/soltaniboard/releases/download/v2.5/Setup_SoltaniBoard.exe" class="w-full text-center py-3 bg-sky-500 text-white font-bold rounded-xl">
           <i class="fa-solid fa-download mr-2"></i>Télécharger Setup (Windows)
         </a>
         <a href="https://wa.me/21629403406" target="_blank" class="w-full text-center py-3 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 font-bold rounded-xl">
-          <i class="fa-brands fa-whatsapp mr-2"></i>Assistance Directe WhatsApp
+          <i class="fa-brands fa-whatsapp mr-2"></i>Contacter sur WhatsApp
         </a>
       </div>
     </div>
   </header>
 
   <!-- HERO SECTION -->
-  <section class="relative pt-36 pb-16 md:pt-44 md:pb-24 gradient-bg overflow-hidden">
+  <section class="relative pt-36 pb-20 md:pt-48 md:pb-28 hero-glow overflow-hidden">
+    <!-- Floating background math orbs -->
+    <div class="absolute top-1/4 left-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/3 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
       
-      <!-- Top Pill -->
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-300 text-xs sm:text-sm font-semibold mb-6">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>Version Officielle • Dédiée aux Enseignants & Formateurs</span>
+      <!-- Top dynamic badge -->
+      <div data-aos="fade-down" class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-800/80 border border-sky-500/30 shadow-lg text-sky-300 text-xs sm:text-sm font-semibold mb-8">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </span>
+        <span>Version 2026 Officielle • Dédiée aux Professeurs de Lycée & Supérieur</span>
       </div>
 
-      <!-- Main Headline -->
-      <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight sm:leading-none mb-6">
-        Enseignez les Maths & Sciences <br class="hidden sm:inline"/>
-        <span class="gradient-text">Sur un Tableau Réellement Interactif</span>
+      <!-- Main Animated Headline with Typing Effect -->
+      <h1 data-aos="fade-up" class="font-display text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.1] mb-6">
+        Donnez Vie à Vos Cours <br/>
+        <span class="gradient-text">de Mathématiques & Sciences</span>
       </h1>
 
-      <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-10">
-        SoltaniBoard combine la fluidité d'un tableau tactile professionnel avec la puissance des outils scientifiques : <strong>GeoGebra intégré</strong>, calculatrice <strong>Casio fx-991ES</strong> au premier plan, <strong>géométrie magnétique</strong>, verrerie de chimie et circuits d'électricité interactifs.
+      <p data-aos="fade-up" data-aos-delay="100" class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-10 font-normal">
+        Plus qu'un tableau blanc classique : une suite pédagogique complète avec <strong>GeoGebra</strong>, calculatrice <strong>Casio fx-991ES toujours visible</strong>, <strong>instruments de géométrie magnétiques</strong> et simulateurs de physique-chimie.
       </p>
 
-      <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+      <!-- CTA Buttons -->
+      <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
         <a href="https://github.com/adelprofmath-cloud/soltaniboard/releases/download/v2.5/Setup_SoltaniBoard.exe" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 text-white font-display font-bold text-lg hover:from-sky-400 hover:to-indigo-500 transition-all transform hover:-translate-y-1 glow-btn flex items-center justify-center gap-3">
-          <i class="fa-solid fa-download text-xl"></i>
-          <span>Télécharger SoltaniBoard (Windows)</span>
+          <i class="fa-solid fa-cloud-arrow-down text-xl"></i>
+          <span>Télécharger SoltaniBoard (152 Mo)</span>
         </a>
-        <a href="https://wa.me/21629403406?text=Bonjour,%20je%20souhaite%20activer%20ma%20licence%20SoltaniBoard" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-display font-semibold text-lg transition-all glow-wa flex items-center justify-center gap-2">
-          <i class="fa-brands fa-whatsapp text-xl text-emerald-400"></i>
-          <span>Demander une Clé de Licence</span>
+        <a href="https://wa.me/21629403406?text=Bonjour%20professeur,%20je%20souhaite%20activer%20SoltaniBoard" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-display font-semibold text-lg transition-all glow-wa flex items-center justify-center gap-2.5">
+          <i class="fa-brands fa-whatsapp text-2xl text-emerald-400"></i>
+          <span>Activation & Assistance Rapide</span>
         </a>
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-slate-400 mb-14">
-        <span class="flex items-center gap-2"><i class="fa-brands fa-windows text-sky-400"></i> Windows 10 & 11 (64 bits)</span>
-        <span class="flex items-center gap-2"><i class="fa-solid fa-pen-fancy text-amber-400"></i> Stylet réaliste sans latence</span>
-        <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-400"></i> Licence sécurisée & support dédié</span>
+      <!-- Trust Badges -->
+      <div data-aos="fade-up" data-aos-delay="300" class="flex flex-wrap items-center justify-center gap-8 text-xs sm:text-sm text-slate-400 mb-14">
+        <span class="flex items-center gap-2"><i class="fa-brands fa-windows text-sky-400 text-base"></i> Windows 10 & 11 (64-bit)</span>
+        <span class="flex items-center gap-2"><i class="fa-solid fa-pen-nib text-amber-400 text-base"></i> Stylet & Crayon sans latence</span>
+        <span class="flex items-center gap-2"><i class="fa-solid fa-desktop text-emerald-400 text-base"></i> Optimisé Vidéo-projecteurs & TNI</span>
       </div>
 
-      <!-- MAIN HERO PREVIEW (Large interactive screenshot container) -->
-      <div class="relative max-w-6xl mx-auto rounded-3xl p-3 bg-gradient-to-b from-sky-500/30 via-slate-800/40 to-transparent border border-sky-500/30 shadow-2xl">
-        <div class="rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl">
-          <div class="h-10 bg-slate-900 px-4 flex items-center justify-between border-b border-slate-800">
+      <!-- Hero Main Interactive Showcase Container -->
+      <div data-aos="zoom-in" data-aos-delay="200" class="relative max-w-6xl mx-auto rounded-3xl p-3 bg-gradient-to-b from-sky-500/30 via-slate-800/40 to-transparent border border-sky-500/30 shadow-2xl">
+        <div class="rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl relative group">
+          
+          <!-- Mock OS Window Topbar -->
+          <div class="h-11 bg-slate-900/95 px-4 flex items-center justify-between border-b border-slate-800">
             <div class="flex items-center gap-2">
               <span class="w-3 h-3 rounded-full bg-rose-500"></span>
               <span class="w-3 h-3 rounded-full bg-amber-500"></span>
               <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-              <span class="ml-2 text-xs font-semibold text-slate-300">SoltaniBoard — Espace de Cours Interactif</span>
+              <span class="ml-3 text-xs font-semibold text-slate-300 flex items-center gap-2">
+                <i class="fa-solid fa-chalkboard text-sky-400"></i> SoltaniBoard PRO — Vue Multifenêtre & Outils Connectés
+              </span>
             </div>
-            <div class="text-xs text-sky-400 font-mono font-semibold flex items-center gap-2">
-              <i class="fa-solid fa-circle text-[7px] text-emerald-400 animate-pulse"></i> Mode Double Fenêtre & Outils Actifs
+            <div class="flex items-center gap-3">
+              <button onclick="openLightbox('assets/images/showcase_geogebra_casio.png', 'Espace Mathématiques : GeoGebra + Casio fx-991ES + Traceur f(x)')" class="text-xs bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 px-3 py-1 rounded-lg border border-sky-500/30 transition-colors flex items-center gap-1.5">
+                <i class="fa-solid fa-expand"></i> Agrandir Plein Écran
+              </button>
             </div>
           </div>
-          <img id="mainHeroImg" src="assets/images/showcase_geogebra_casio.png" alt="SoltaniBoard avec GeoGebra et Casio" class="w-full object-cover transition-opacity duration-300" />
+
+          <!-- Hero Image with click to zoom -->
+          <div class="relative cursor-pointer overflow-hidden" onclick="openLightbox('assets/images/showcase_geogebra_casio.png', 'Espace Mathématiques : GeoGebra + Casio fx-991ES + Traceur f(x)')">
+            <img src="assets/images/showcase_geogebra_casio.png" alt="SoltaniBoard GeoGebra Casio" class="w-full object-cover group-hover:scale-[1.01] transition-transform duration-500" />
+            <div class="absolute inset-0 bg-sky-500/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+              <span class="px-4 py-2 rounded-xl bg-slate-900/80 backdrop-blur-md text-white font-bold text-sm shadow-2xl border border-white/20 flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass-plus text-sky-400"></i> Cliquez pour zoomer
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- INTERACTIVE GALLERY SHOWCASE WITH REAL SCREENSHOTS -->
-  <section id="demo-gallery" class="py-20 bg-[#091126] border-y border-slate-800">
+  <!-- INTERACTIVE GALLERY SHOWCASE (WITH REAL PHOTOS & TABS) -->
+  <section id="gallery" class="py-24 bg-[#080f24] border-y border-slate-800 relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-3xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-400/25">
-          Démonstration en Direct
+      <div class="text-center max-w-3xl mx-auto mb-14" data-aos="fade-up">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-400 bg-sky-500/10 px-3.5 py-1.5 rounded-full border border-sky-400/30">
+          Captures d'Écran Réelles
         </span>
         <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-white mt-4 mb-4">
-          Captures Réelles du Logiciel en Action
+          Explorez l'Interface Réelle de SoltaniBoard
         </h2>
         <p class="text-slate-300 text-base">
-          Cliquez sur les onglets ci-dessous pour explorer les différents modules de SoltaniBoard utilisés quotidiennement en classe.
+          Découvrez en détails les 4 principaux environnements scientifiques intégrés au logiciel.
         </p>
       </div>
 
-      <!-- Interactive Gallery Tabs -->
-      <div class="flex flex-wrap items-center justify-center gap-3 mb-10">
-        <button onclick="switchGalleryTab('math')" id="tab-math" class="gallery-tab active px-5 py-3 rounded-xl border border-slate-700 bg-slate-800/80 text-sm font-bold transition-all flex items-center gap-2.5">
+      <!-- Tab Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-10" data-aos="fade-up" data-aos-delay="100">
+        <button onclick="switchTab('tab-math', 'content-math')" id="tab-math" class="tab-btn active px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 text-sm font-bold transition-all flex items-center gap-2.5">
           <i class="fa-solid fa-calculator text-emerald-400"></i>
-          <span>GeoGebra & Casio fx-991ES</span>
+          <span>1. GeoGebra & Casio fx-991ES</span>
         </button>
-        <button onclick="switchGalleryTab('geometry')" id="tab-geometry" class="gallery-tab px-5 py-3 rounded-xl border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-bold transition-all flex items-center gap-2.5">
+        <button onclick="switchTab('tab-geom', 'content-geom')" id="tab-geom" class="tab-btn px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-bold transition-all flex items-center gap-2.5">
           <i class="fa-solid fa-compass-drafting text-sky-400"></i>
-          <span>Instruments de Géométrie Magnétiques</span>
+          <span>2. Géométrie & Mesures</span>
         </button>
-        <button onclick="switchGalleryTab('physics')" id="tab-physics" class="gallery-tab px-5 py-3 rounded-xl border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-bold transition-all flex items-center gap-2.5">
-          <i class="fa-solid fa-bolt text-amber-400"></i>
-          <span>Circuits Électriques RC / RLC & Oscilloscope</span>
+        <button onclick="switchTab('tab-phys', 'content-phys')" id="tab-phys" class="tab-btn px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-bold transition-all flex items-center gap-2.5">
+          <i class="fa-solid fa-wave-square text-amber-400"></i>
+          <span>3. Circuits RC/RLC & Oscilloscope</span>
         </button>
-        <button onclick="switchGalleryTab('chemistry')" id="tab-chemistry" class="gallery-tab px-5 py-3 rounded-xl border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-bold transition-all flex items-center gap-2.5">
+        <button onclick="switchTab('tab-chem', 'content-chem')" id="tab-chem" class="tab-btn px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 text-slate-300 text-sm font-bold transition-all flex items-center gap-2.5">
           <i class="fa-solid fa-flask-vial text-rose-400"></i>
-          <span>Verrerie & Schémas de Chimie</span>
+          <span>4. Verrerie & Chimie</span>
         </button>
       </div>
 
-      <!-- Interactive Display Card -->
-      <div class="glass-card rounded-3xl p-4 sm:p-6 border border-slate-700/80 shadow-2xl max-w-6xl mx-auto">
+      <!-- Tab Content Panels -->
+      <div class="max-w-6xl mx-auto" data-aos="fade-up" data-aos-delay="200">
         
-        <!-- Tab Content: Math GeoGebra & Casio -->
-        <div id="content-math" class="tab-pane">
-          <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-900/90 p-4 rounded-xl border border-slate-800">
-            <div>
-              <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-chart-area text-emerald-400"></i>
-                Espace Mathématiques : GeoGebra + Calculatrice Casio fx-991ES + Traceur f(x)
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-400 mt-1">
-                La calculatrice Casio reste au premier plan sans être masquée pendant l'écriture au stylet. Le tracé de courbes de fonctions est automatiquement découpé aux bornes de la grille.
-              </p>
+        <!-- Tab 1: GeoGebra & Casio -->
+        <div id="content-math" class="tab-content block">
+          <div class="glass-card rounded-3xl p-5 sm:p-7">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-6">
+              <div class="lg:col-span-8">
+                <span class="text-xs font-mono font-semibold text-emerald-400 uppercase tracking-wider">Module Mathématiques</span>
+                <h3 class="text-2xl font-display font-bold text-white mt-1">GeoGebra Intégré + Calculatrice Casio fx-991ES Toujours Visible</h3>
+                <p class="text-slate-300 text-sm mt-2 leading-relaxed">
+                  Bénéficiez d'une fenêtre GeoGebra complète pour les figures géométriques et le calcul formel. L'émulateur Casio reste au premier plan pour projeter vos calculs aux élèves sans jamais disparaître sous le tableau.
+                </p>
+              </div>
+              <div class="lg:col-span-4 flex flex-wrap lg:justify-end gap-2">
+                <button onclick="openLightbox('assets/images/showcase_geogebra_casio.png', 'Espace Mathématiques : GeoGebra + Casio fx-991ES + Traceur f(x)')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-bold text-sky-400 flex items-center gap-2">
+                  <i class="fa-solid fa-expand"></i> Voir en Plein Écran
+                </button>
+              </div>
             </div>
-            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded-lg border border-emerald-500/30 whitespace-nowrap">
-              Calcul & Graphes
-            </span>
-          </div>
-          <div class="rounded-xl overflow-hidden border border-slate-700 shadow-xl bg-black">
-            <img src="assets/images/showcase_geogebra_casio.png" alt="GeoGebra et Casio sur SoltaniBoard" class="w-full hover:scale-[1.01] transition-transform duration-300" />
+
+            <div class="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl bg-black cursor-pointer group" onclick="openLightbox('assets/images/showcase_geogebra_casio.png', 'Espace Mathématiques : GeoGebra + Casio fx-991ES + Traceur f(x)')">
+              <img src="assets/images/showcase_geogebra_casio.png" alt="GeoGebra et Casio sur SoltaniBoard" class="w-full object-cover group-hover:scale-[1.01] transition-transform duration-300" />
+            </div>
           </div>
         </div>
 
-        <!-- Tab Content: Geometry -->
-        <div id="content-geometry" class="tab-pane hidden">
-          <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-900/90 p-4 rounded-xl border border-slate-800">
-            <div>
-              <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-ruler-combined text-sky-400"></i>
-                Géométrie Instrumentale : Règle, Rapporteur 180°, Compas à pointe sèche & Repère
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-400 mt-1">
-                Mesurez au millimètre et au degré près. Tracez des arcs de cercle et cercles complets grâce au compas virtuel interactif avec magnétisme.
-              </p>
+        <!-- Tab 2: Geometry -->
+        <div id="content-geom" class="tab-content hidden">
+          <div class="glass-card rounded-3xl p-5 sm:p-7">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-6">
+              <div class="lg:col-span-8">
+                <span class="text-xs font-mono font-semibold text-sky-400 uppercase tracking-wider">Module Géométrie</span>
+                <h3 class="text-2xl font-display font-bold text-white mt-1">Instruments Virtuels Magnétiques : Règle, Rapporteur, Compas & Repère</h3>
+                <p class="text-slate-300 text-sm mt-2 leading-relaxed">
+                  Mesurez au millimètre et au degré près avec un magnétisme intelligent. Le compas permet de tracer arcs et cercles complets avec rotation naturelle à la souris ou au stylet.
+                </p>
+              </div>
+              <div class="lg:col-span-4 flex flex-wrap lg:justify-end gap-2">
+                <button onclick="openLightbox('assets/images/showcase_geometry.png', 'Instruments de Géométrie : Règle, Rapporteur, Compas et Repère Cartésien')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-bold text-sky-400 flex items-center gap-2">
+                  <i class="fa-solid fa-expand"></i> Voir en Plein Écran
+                </button>
+              </div>
             </div>
-            <span class="px-3 py-1 bg-sky-500/20 text-sky-300 text-xs font-semibold rounded-lg border border-sky-500/30 whitespace-nowrap">
-              Haute Précision
-            </span>
-          </div>
-          <div class="rounded-xl overflow-hidden border border-slate-700 shadow-xl bg-black">
-            <img src="assets/images/showcase_geometry.png" alt="Instruments de géométrie sur SoltaniBoard" class="w-full hover:scale-[1.01] transition-transform duration-300" />
+
+            <div class="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl bg-black cursor-pointer group" onclick="openLightbox('assets/images/showcase_geometry.png', 'Instruments de Géométrie : Règle, Rapporteur, Compas et Repère Cartésien')">
+              <img src="assets/images/showcase_geometry.png" alt="Géométrie SoltaniBoard" class="w-full object-cover group-hover:scale-[1.01] transition-transform duration-300" />
+            </div>
           </div>
         </div>
 
-        <!-- Tab Content: Physics -->
-        <div id="content-physics" class="tab-pane hidden">
-          <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-900/90 p-4 rounded-xl border border-slate-800">
-            <div>
-              <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-wave-square text-amber-400"></i>
-                Laboratoire de Physique : Simulateur RC / RLC, Oscilloscope Bi-courbe & Voltmètre
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-400 mt-1">
-                Visualisez la charge et décharge d'un condensateur, les signaux sinusoïdaux et créneaux sur grand oscilloscope virtuel, et composez vos schémas électriques normalisés.
-              </p>
+        <!-- Tab 3: Physics -->
+        <div id="content-phys" class="tab-content hidden">
+          <div class="glass-card rounded-3xl p-5 sm:p-7">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-6">
+              <div class="lg:col-span-8">
+                <span class="text-xs font-mono font-semibold text-amber-400 uppercase tracking-wider">Module Physique</span>
+                <h3 class="text-2xl font-display font-bold text-white mt-1">Laboratoire Virtuel : Circuits RC & RLC avec Oscilloscope Bi-courbe</h3>
+                <p class="text-slate-300 text-sm mt-2 leading-relaxed">
+                  Animez la charge et décharge d'un condensateur en direct, visualisez les signaux alternatifs sur oscilloscope virtuel avec base de temps réglable et construisez vos schémas électriques normalisés.
+                </p>
+              </div>
+              <div class="lg:col-span-4 flex flex-wrap lg:justify-end gap-2">
+                <button onclick="openLightbox('assets/images/showcase_physics.png', 'Laboratoire de Physique : Circuits RC / RLC, Oscilloscope et Voltmètre')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-bold text-amber-400 flex items-center gap-2">
+                  <i class="fa-solid fa-expand"></i> Voir en Plein Écran
+                </button>
+              </div>
             </div>
-            <span class="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-semibold rounded-lg border border-amber-500/30 whitespace-nowrap">
-              Simulation Temps Réel
-            </span>
-          </div>
-          <div class="rounded-xl overflow-hidden border border-slate-700 shadow-xl bg-black">
-            <img src="assets/images/showcase_physics.png" alt="Circuits RC RLC et Oscilloscope SoltaniBoard" class="w-full hover:scale-[1.01] transition-transform duration-300" />
+
+            <div class="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl bg-black cursor-pointer group" onclick="openLightbox('assets/images/showcase_physics.png', 'Laboratoire de Physique : Circuits RC / RLC, Oscilloscope et Voltmètre')">
+              <img src="assets/images/showcase_physics.png" alt="Physique Circuits RC RLC SoltaniBoard" class="w-full object-cover group-hover:scale-[1.01] transition-transform duration-300" />
+            </div>
           </div>
         </div>
 
-        <!-- Tab Content: Chemistry -->
-        <div id="content-chemistry" class="tab-pane hidden">
-          <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-900/90 p-4 rounded-xl border border-slate-800">
-            <div>
-              <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-vial text-rose-400"></i>
-                Verrerie de Chimie : Béchers, Erlenmeyers gradués, Éprouvettes & Tubes à essai
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-400 mt-1">
-                Ajustez les niveaux de liquide, les colorations chimiques et collez instantanément vos montages sur la feuille de cours ou sur le tableau.
-              </p>
+        <!-- Tab 4: Chemistry -->
+        <div id="content-chem" class="tab-content hidden">
+          <div class="glass-card rounded-3xl p-5 sm:p-7">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-6">
+              <div class="lg:col-span-8">
+                <span class="text-xs font-mono font-semibold text-rose-400 uppercase tracking-wider">Module Chimie</span>
+                <h3 class="text-2xl font-display font-bold text-white mt-1">Verrerie de Chimie Interactive : Béchers, Erlenmeyers, Éprouvettes</h3>
+                <p class="text-slate-300 text-sm mt-2 leading-relaxed">
+                  Ajustez les volumes et les colorations chimiques, disposez les tubes à essai, béchers et brûleurs bunsen, puis gravez instantanément le montage sur votre cours.
+                </p>
+              </div>
+              <div class="lg:col-span-4 flex flex-wrap lg:justify-end gap-2">
+                <button onclick="openLightbox('assets/images/showcase_chemistry.png', 'Verrerie de Chimie : Béchers, Erlenmeyers, Éprouvettes et Bec Bunsen')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-bold text-rose-400 flex items-center gap-2">
+                  <i class="fa-solid fa-expand"></i> Voir en Plein Écran
+                </button>
+              </div>
             </div>
-            <span class="px-3 py-1 bg-rose-500/20 text-rose-300 text-xs font-semibold rounded-lg border border-rose-500/30 whitespace-nowrap">
-              Expérimentation Virtuelle
-            </span>
-          </div>
-          <div class="rounded-xl overflow-hidden border border-slate-700 shadow-xl bg-black">
-            <img src="assets/images/showcase_chemistry.png" alt="Verrerie de chimie sur SoltaniBoard" class="w-full hover:scale-[1.01] transition-transform duration-300" />
+
+            <div class="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl bg-black cursor-pointer group" onclick="openLightbox('assets/images/showcase_chemistry.png', 'Verrerie de Chimie : Béchers, Erlenmeyers, Éprouvettes et Bec Bunsen')">
+              <img src="assets/images/showcase_chemistry.png" alt="Chimie SoltaniBoard" class="w-full object-cover group-hover:scale-[1.01] transition-transform duration-300" />
+            </div>
           </div>
         </div>
 
@@ -331,212 +407,276 @@
     </div>
   </section>
 
-  <!-- FEATURES SECTION -->
-  <section id="features" class="py-24 relative">
+  <!-- INTERACTIVE SIMULATOR PREVIEW (TEST DIRECT SUR LE SITE) -->
+  <section id="interactive-preview" class="py-24 relative overflow-hidden bg-[#060c1d]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-white mb-4">
-          Conçu pour le Quotidien des Enseignants
+      <div class="text-center max-w-3xl mx-auto mb-14" data-aos="fade-up">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/30">
+          Interactif • Essayez en Direct
+        </span>
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-white mt-4 mb-4">
+          Testez le Moteur de Tracé de Courbes
+        </h2>
+        <p class="text-slate-300 text-base">
+          Choisissez une fonction mathématique ci-dessous ou saisissez votre propre formule pour voir le tracé instantané comme dans SoltaniBoard.
+        </p>
+      </div>
+
+      <!-- Mini Live Interactive Plotter Widget -->
+      <div class="glass-card rounded-3xl p-6 max-w-4xl mx-auto border border-sky-500/30 shadow-2xl" data-aos="zoom-in">
+        
+        <!-- Controls -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-slate-300 mb-2">Formule de la fonction f(x) :</label>
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-sky-400 font-bold px-3 py-2 bg-slate-900 rounded-xl border border-slate-700">f(x) =</span>
+              <input type="text" id="live-fx-input" value="x * Math.sin(x)" class="flex-1 bg-slate-900 text-white font-mono px-4 py-2.5 rounded-xl border border-slate-700 focus:border-sky-400 focus:outline-none text-sm" placeholder="ex: Math.sin(x), x*x - 4, Math.cos(x)" />
+              <button onclick="drawLivePlot()" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl text-sm transition-all glow-btn">
+                Tracer
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-2">Exemples Préréglés :</label>
+            <select id="preset-select" onchange="applyPreset(this.value)" class="w-full bg-slate-900 text-white font-sans px-3 py-2.5 rounded-xl border border-slate-700 text-sm focus:border-sky-400 focus:outline-none">
+              <option value="x * Math.sin(x)">x • sin(x) (Oscillation)</option>
+              <option value="x * x - 4">x² - 4 (Parabole)</option>
+              <option value="Math.cos(2 * x)">cos(2x) (Trigonométrie)</option>
+              <option value="Math.exp(x * 0.5) - 3">e^(0.5x) - 3 (Exponentielle)</option>
+              <option value="1 / (x + 0.0001)">1 / x (Hyperbole)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div class="relative bg-[#071126] rounded-2xl border border-slate-800 overflow-hidden h-72 sm:h-80 flex items-center justify-center">
+          <canvas id="liveCanvas" class="w-full h-full"></canvas>
+          <div class="absolute bottom-3 left-4 text-[11px] font-mono text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-700/60">
+            Repère Orthonormé • Découpage strict
+          </div>
+          <div id="canvas-coords" class="absolute bottom-3 right-4 text-[11px] font-mono text-sky-400 bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-700/60">
+            x : 0.00 | y : 0.00
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES GRID -->
+  <section id="features" class="py-24 relative bg-[#060b19]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-white mb-4">
+          Toutes les Capacités Pédagogiques
         </h2>
         <p class="text-slate-400 text-base">
-          Chaque détail a été pensé pour vous faire gagner un temps précieux durant vos séances de cours.
+          Conçu par un enseignant pour répondre aux exigences réelles des séances de cours et travaux dirigés.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-sky-500/15 border border-sky-500/25 text-sky-400 flex items-center justify-center text-xl mb-5">
-              <i class="fa-solid fa-pen-clip"></i>
-            </div>
-            <h3 class="font-display font-bold text-xl text-white mb-2">Stylet Réaliste & Écriture Naturelle</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              Pointe biseautée ultra-réactive, lissage vectoriel sans saccades et gestion intelligente de la gomme pour tableau interactif ou tablette graphique.
-            </p>
+        <div class="glass-card rounded-2xl p-7" data-aos="fade-up">
+          <div class="w-12 h-12 rounded-xl bg-sky-500/15 border border-sky-500/25 text-sky-400 flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-chalkboard"></i>
           </div>
-          <div class="text-xs text-sky-400 font-semibold flex items-center gap-1">
-            <span>Latence minimale garantie</span>
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-          </div>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Tableau Noir & Cadre Bois</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Profitez du confort visuel du tableau noir d'école ou blanc classique avec un rendu d'encre vectorielle lissé pour une lisibilité parfaite au fond de la classe.
+          </p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 flex items-center justify-center text-xl mb-5">
-              <i class="fa-solid fa-calculator"></i>
-            </div>
-            <h3 class="font-display font-bold text-xl text-white mb-2">Casio fx-991ES Émulateur</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              L'émulateur officiel Casio est intégré et maintenu en mode <em>Always on Top</em> pour ne jamais disparaître derrière le tableau pendant vos explications.
-            </p>
+        <div class="glass-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-calculator"></i>
           </div>
-          <div class="text-xs text-emerald-400 font-semibold flex items-center gap-1">
-            <span>Projection directe aux élèves</span>
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-          </div>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Casio fx-991ES Toujours Visible</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            L'émulateur Casio reste verrouillé en superposition (TopMost) pour manipuler les touches tout en écrivant au stylet sans être masqué.
+          </p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/15 border border-indigo-500/25 text-indigo-400 flex items-center justify-center text-xl mb-5">
-              <i class="fa-solid fa-square-root-variable"></i>
-            </div>
-            <h3 class="font-display font-bold text-xl text-white mb-2">Traceur f(x) Découpé Rigoureusement</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              Tracez simultanément $f(x)$ et $g(x)$, calculez automatiquement les tangentes au point $x_0$, avec découpage strict aux limites de la grille.
-            </p>
+        <div class="glass-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-12 h-12 rounded-xl bg-indigo-500/15 border border-indigo-500/25 text-indigo-400 flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-chart-line"></i>
           </div>
-          <div class="text-xs text-indigo-400 font-semibold flex items-center gap-1">
-            <span>Graver sur tableau en 1 clic</span>
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-          </div>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Traceur f(x) Découpé Rigoureusement</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Algorithme de découpage strict aux bornes $[x_{\min}, x_{\max}] \times [y_{\min}, y_{\max}]$, tangentes automatiques et vecteurs unitaires $(\vec{\imath}, \vec{\jmath})$ de même longueur.
+          </p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/25 text-amber-400 flex items-center justify-center text-xl mb-5">
-              <i class="fa-solid fa-compass-drafting"></i>
-            </div>
-            <h3 class="font-display font-bold text-xl text-white mb-2">Géométrie Magnétique Complète</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              Règle métrique, équerre, rapporteur d'angle rotatif et compas traçant des arcs de cercle précis grâce à l'accroche magnétique intégrée.
-            </p>
+        <div class="glass-card rounded-2xl p-7" data-aos="fade-up">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/25 text-amber-400 flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-compass-drafting"></i>
           </div>
-          <div class="text-xs text-amber-400 font-semibold flex items-center gap-1">
-            <span>Précision d'angle & de mesure</span>
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-          </div>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Géométrie Instrumentale</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Règle graduée, équerre d'angle droit, rapporteur circulaire et compas à pointe fixe pour enseigner la géométrie pure comme au tableau physique.
+          </p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-purple-500/15 border border-purple-500/25 text-purple-400 flex items-center justify-center text-xl mb-5">
-              <i class="fa-solid fa-columns"></i>
-            </div>
-            <h3 class="font-display font-bold text-xl text-white mb-2">Mode Double Fenêtre & Export PDF</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              Présentez l'énoncé sur la page de gauche et résolvez sur la page de droite, puis sauvegardez l'ensemble de la session en PDF vectoriel haute définition.
-            </p>
+        <div class="glass-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/15 border border-purple-500/25 text-purple-400 flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-file-pdf"></i>
           </div>
-          <div class="text-xs text-purple-400 font-semibold flex items-center gap-1">
-            <span>Partage immédiat du cours</span>
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-          </div>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Mode Double Page & Export PDF</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Affichez simultanément le sujet d'exercice et la résolution pas-à-pas, puis exportez la totalité de la séance en document PDF propre pour vos élèves.
+          </p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-rose-500/15 border border-rose-500/25 text-rose-400 flex items-center justify-center text-xl mb-5">
-              <i class="fa-solid fa-atom"></i>
-            </div>
-            <h3 class="font-display font-bold text-xl text-white mb-2">Physique-Chimie Expérimentale</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              Schémas électriques avec voltmètre et oscilloscope animés, ainsi que la verrerie de chimie pour illustrer toutes les manipulations de laboratoire.
-            </p>
+        <div class="glass-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-12 h-12 rounded-xl bg-rose-500/15 border border-rose-500/25 text-rose-400 flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-atom"></i>
           </div>
-          <div class="text-xs text-rose-400 font-semibold flex items-center gap-1">
-            <span>Conforme aux programmes scolaires</span>
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-          </div>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Simulateurs Physique-Chimie</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Verrerie de laboratoire ajustable, composants d'électricité normalisés et oscilloscope animé pour illustrer concrètement les sciences physiques.
+          </p>
         </div>
 
       </div>
+
     </div>
   </section>
 
-  <!-- LICENCE ACTIVATION SECTION (SANS AUCUN PRIX) -->
-  <section id="licence" class="py-24 bg-gradient-to-b from-[#091124] to-[#070d1e] border-t border-slate-800">
+  <!-- LICENCE ACTIVATION (SANS PRIX) -->
+  <section id="licence" class="py-24 bg-gradient-to-b from-[#080f26] to-[#060b19] border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/25">
+      <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/30">
           Activation Sécurisée
         </span>
-        <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-white mt-4 mb-4">
-          Comment Activer Votre Logiciel ?
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-white mt-4 mb-4">
+          Comment Activer Votre Copie ?
         </h2>
         <p class="text-slate-300 text-base">
-          Une démarche simple en 3 étapes pour bénéficier de SoltaniBoard sur votre ordinateur.
+          Chaque licence est liée au matériel de votre ordinateur pour garantir une sécurité et une stabilité totales.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-14">
         
-        <!-- Step 1 -->
-        <div class="glass-card rounded-2xl p-8 text-center relative">
+        <div class="glass-card rounded-2xl p-8 text-center" data-aos="fade-up">
           <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 font-display font-extrabold text-xl flex items-center justify-center mx-auto mb-5 border border-sky-500/30">
             1
           </div>
-          <h3 class="font-display font-bold text-xl text-white mb-2">Installez le Logiciel</h3>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Installation</h3>
           <p class="text-slate-400 text-sm leading-relaxed">
-            Téléchargez l'installateur officiel et lancez <strong>Setup_SoltaniBoard.exe</strong> sur votre PC Windows.
+            Téléchargez et lancez <strong>Setup_SoltaniBoard.exe</strong> sur votre PC Windows 10 ou 11.
           </p>
         </div>
 
-        <!-- Step 2 -->
-        <div class="glass-card rounded-2xl p-8 text-center relative">
+        <div class="glass-card rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay="100">
           <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 font-display font-extrabold text-xl flex items-center justify-center mx-auto mb-5 border border-sky-500/30">
             2
           </div>
-          <h3 class="font-display font-bold text-xl text-white mb-2">Copiez votre ID Machine</h3>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Identifiant Machine</h3>
           <p class="text-slate-400 text-sm leading-relaxed">
-            Au lancement ou dans la fenêtre d'activation, relevez votre identifiant matériel unique (ex: <code>SB-XXXX-XXXX</code>).
+            Relevez votre code machine unique qui s'affiche automatiquement dans la fenêtre d'activation (ex: <code>SB-XXXX-XXXX</code>).
           </p>
         </div>
 
-        <!-- Step 3 -->
-        <div class="glass-card rounded-2xl p-8 text-center relative">
+        <div class="glass-card rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay="200">
           <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 font-display font-extrabold text-xl flex items-center justify-center mx-auto mb-5 border border-emerald-500/30">
             3
           </div>
-          <h3 class="font-display font-bold text-xl text-white mb-2">Recevez votre Clé</h3>
+          <h3 class="font-display font-bold text-xl text-white mb-2">Clé d'Activation</h3>
           <p class="text-slate-400 text-sm leading-relaxed">
-            Envoyez votre ID au support WhatsApp pour obtenir instantanément votre clé d'activation officielle.
+            Transmettez votre code au support WhatsApp pour recevoir votre clé officielle et débloquer toutes les fonctionnalités.
           </p>
         </div>
 
       </div>
 
-      <!-- WhatsApp Direct Contact Banner -->
-      <div class="max-w-3xl mx-auto bg-gradient-to-r from-emerald-950/40 via-slate-900 to-sky-950/40 p-8 rounded-3xl border border-emerald-500/30 shadow-2xl text-center">
+      <!-- WhatsApp Banner -->
+      <div data-aos="zoom-in" class="max-w-3xl mx-auto bg-gradient-to-r from-emerald-950/40 via-slate-900 to-sky-950/40 p-8 rounded-3xl border border-emerald-500/30 shadow-2xl text-center">
         <h3 class="font-display font-extrabold text-2xl text-white mb-3">
-          Contactez le Support pour Activer votre Licence
+          Demande d'Activation & Renseignements
         </h3>
         <p class="text-slate-300 text-sm mb-6 max-w-xl mx-auto">
-          Nos conseillers sont disponibles sur WhatsApp pour vous accompagner dans l'installation, répondre à vos questions et générer votre clé d'activation.
+          Contactez directement le support officiel sur WhatsApp pour obtenir de l'aide sur l'installation ou activer votre licence.
         </p>
         <a href="https://wa.me/21629403406?text=Bonjour,%20je%20souhaite%20activer%20SoltaniBoard%20sur%20mon%20ordinateur" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-display font-bold text-base transition-all glow-wa">
           <i class="fa-brands fa-whatsapp text-2xl"></i>
-          <span>Contacter le Support WhatsApp (+216 29 403 406)</span>
+          <span>Ouvrir la discussion WhatsApp (+216 29 403 406)</span>
         </a>
       </div>
 
     </div>
   </section>
 
-  <!-- SUPPORT & FOOTER -->
-  <footer id="support" class="py-16 border-t border-slate-800 bg-[#050914] text-slate-400 text-sm">
+  <!-- FAQ SECTION -->
+  <section id="faq" class="py-20 bg-[#060b19] border-t border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-white mb-3">Questions Fréquentes</h2>
+        <p class="text-slate-400 text-sm">Tout ce que vous devez savoir avant d'installer le logiciel.</p>
+      </div>
+
+      <div class="space-y-4">
+        <details class="glass-card rounded-2xl p-5 cursor-pointer group" data-aos="fade-up">
+          <summary class="font-bold text-white flex items-center justify-between">
+            <span>Quels sont les systèmes d'exploitation compatibles ?</span>
+            <i class="fa-solid fa-chevron-down text-sky-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-400 text-sm mt-3 leading-relaxed">
+            SoltaniBoard fonctionne de manière optimale sur tout ordinateur équipé de <strong>Windows 10 ou Windows 11 (64 bits)</strong>. Il est entièrement compatible avec les écrans tactiles, vidéo-projecteurs interactifs et tablettes graphiques (Wacom, Huion, XP-Pen, etc.).
+          </p>
+        </details>
+
+        <details class="glass-card rounded-2xl p-5 cursor-pointer group" data-aos="fade-up" data-aos-delay="100">
+          <summary class="font-bold text-white flex items-center justify-between">
+            <span>La calculatrice Casio nécessite-t-elle une installation séparée ?</span>
+            <i class="fa-solid fa-chevron-down text-sky-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-400 text-sm mt-3 leading-relaxed">
+            Non, l'émulateur officiel de la Casio fx-991ES PLUS est directement intégré au pack. Il s'ouvre en un clic et reste automatiquement au premier plan pendant vos explications.
+          </p>
+        </details>
+
+        <details class="glass-card rounded-2xl p-5 cursor-pointer group" data-aos="fade-up" data-aos-delay="200">
+          <summary class="font-bold text-white flex items-center justify-between">
+            <span>Puis-je exporter mes cours pour mes élèves ?</span>
+            <i class="fa-solid fa-chevron-down text-sky-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-400 text-sm mt-3 leading-relaxed">
+            Oui, un bouton <em>Exporter PDF</em> permet d'enregistrer l'intégralité des tableaux et pages de la séance en haute résolution vectorielle pour les partager instantanément à vos élèves.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-16 border-t border-slate-800 bg-[#040813] text-slate-400 text-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
         <div>
           <div class="flex items-center gap-3 mb-4">
-            <img src="assets/images/app_logo.png" alt="Logo SoltaniBoard" class="w-9 h-9" />
+            <img src="assets/images/app_logo.png" alt="SoltaniBoard" class="w-9 h-9" />
             <span class="font-display font-extrabold text-xl text-white">SoltaniBoard</span>
           </div>
           <p class="text-xs text-slate-400 leading-relaxed">
-            La suite numérique de référence pour l'enseignement des mathématiques et des sciences physiques en lycée et université.
+            Solution pédagogique interactive nouvelle génération pour l'enseignement des mathématiques, de la physique et de la chimie.
           </p>
         </div>
 
         <div>
-          <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Téléchargement & Dépôt</h4>
-          <ul class="space-y-2 text-xs">
+          <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Liens & Téléchargement</h4>
+          <ul class="space-y-2.5 text-xs">
             <li>
               <a href="https://github.com/adelprofmath-cloud/soltaniboard/releases/download/v2.5/Setup_SoltaniBoard.exe" class="hover:text-sky-400 transition-colors flex items-center gap-2">
-                <i class="fa-solid fa-download text-sky-400"></i> Installateur Windows (.exe)
+                <i class="fa-solid fa-download text-sky-400"></i> Télécharger l'Installateur Windows
               </a>
             </li>
             <li>
@@ -548,14 +688,14 @@
         </div>
 
         <div>
-          <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Support & Assistance</h4>
-          <ul class="space-y-2 text-xs">
+          <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Support & Contact</h4>
+          <ul class="space-y-2.5 text-xs">
             <li class="flex items-center gap-2 text-slate-300">
               <i class="fa-solid fa-phone text-emerald-400"></i> +216 29 403 406
             </li>
             <li>
               <a href="https://wa.me/21629403406" target="_blank" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-2 font-medium">
-                <i class="fa-brands fa-whatsapp text-emerald-400"></i> Ouvrir la discussion WhatsApp
+                <i class="fa-brands fa-whatsapp text-emerald-400"></i> Contacter par WhatsApp
               </a>
             </li>
           </ul>
@@ -564,14 +704,21 @@
 
       <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
         <span>© 2026 SoltaniBoard. Tous droits réservés.</span>
-        <span>Compatible Windows 10 & 11 (64-bit)</span>
+        <span>Windows 10 & 11 (64 bits)</span>
       </div>
 
     </div>
   </footer>
 
-  <!-- DYNAMIC JAVASCRIPT LOGIC -->
+  <!-- AOS ANIMATION SCRIPT -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    AOS.init({
+      once: true,
+      duration: 700,
+      easing: 'ease-out-cubic'
+    });
+
     // Mobile menu toggle
     const btn = document.getElementById('mobileMenuBtn');
     const menu = document.getElementById('mobileMenu');
@@ -579,26 +726,157 @@
       menu.classList.toggle('hidden');
     });
 
-    // Interactive gallery switcher
-    function switchGalleryTab(tabKey) {
-      const tabs = ['math', 'geometry', 'physics', 'chemistry'];
-      
-      tabs.forEach(key => {
-        const tabBtn = document.getElementById('tab-' + key);
-        const tabContent = document.getElementById('content-' + key);
-        
-        if (key === tabKey) {
-          tabBtn.classList.add('active');
-          tabBtn.classList.remove('text-slate-300');
-          tabContent.classList.remove('hidden');
-        } else {
-          tabBtn.classList.remove('active');
-          tabBtn.classList.add('text-slate-300');
-          tabContent.classList.add('hidden');
-        }
+    // Gallery tab switcher
+    function switchTab(tabId, contentId) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.classList.add('text-slate-300');
       });
-    }
-  </script>
+      document.querySelectorAll('.tab-content').forEach(c => {
+        c.classList.add('hidden');
+        c.classList.remove('block');
+      });
 
+      const activeBtn = document.getElementById(tabId);
+      const activeContent = document.getElementById(contentId);
+      if (activeBtn && activeContent) {
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-slate-300');
+        activeContent.classList.remove('hidden');
+        activeContent.classList.add('block');
+      }
+    }
+
+    // Lightbox modal functions
+    function openLightbox(src, caption) {
+      const modal = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      img.src = src;
+      cap.innerText = caption;
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    // Live interactive plotter on canvas
+    const canvas = document.getElementById('liveCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      drawLivePlot();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 100);
+
+    function drawLivePlot() {
+      const w = canvas.getBoundingClientRect().width;
+      const h = canvas.getBoundingClientRect().height;
+      if (w <= 0 || h <= 0) return;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Bounds
+      const xMin = -6, xMax = 6;
+      const yMin = -4, yMax = 4;
+
+      const toScreenX = x => ((x - xMin) / (xMax - xMin)) * w;
+      const toScreenY = y => h - ((y - yMin) / (yMax - yMin)) * h;
+
+      // Grid
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+      ctx.lineWidth = 1;
+      for (let x = xMin; x <= xMax; x += 1) {
+        ctx.beginPath();
+        ctx.moveTo(toScreenX(x), 0);
+        ctx.lineTo(toScreenX(x), h);
+        ctx.stroke();
+      }
+      for (let y = yMin; y <= yMax; y += 1) {
+        ctx.beginPath();
+        ctx.moveTo(0, toScreenY(y));
+        ctx.lineTo(w, toScreenY(y));
+        ctx.stroke();
+      }
+
+      // Axes
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.6)';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(0, toScreenY(0));
+      ctx.lineTo(w, toScreenY(0));
+      ctx.moveTo(toScreenX(0), 0);
+      ctx.lineTo(toScreenX(0), h);
+      ctx.stroke();
+
+      // Formula parse
+      const expr = document.getElementById('live-fx-input').value;
+      let fn;
+      try {
+        fn = new Function('x', 'return ' + expr);
+        fn(1); // Test execution
+      } catch (e) {
+        return;
+      }
+
+      // Draw Curve
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      let started = false;
+
+      const step = (xMax - xMin) / 300;
+      for (let x = xMin; x <= xMax; x += step) {
+        try {
+          const y = fn(x);
+          if (!isNaN(y) && isFinite(y) && y >= yMin && y <= yMax) {
+            const sx = toScreenX(x);
+            const sy = toScreenY(y);
+            if (!started) {
+              ctx.moveTo(sx, sy);
+              started = true;
+            } else {
+              ctx.lineTo(sx, sy);
+            }
+          } else {
+            started = false;
+          }
+        } catch {
+          started = false;
+        }
+      }
+      ctx.stroke();
+    }
+
+    function applyPreset(val) {
+      document.getElementById('live-fx-input').value = val;
+      drawLivePlot();
+    }
+
+    // Mouse coordinates on canvas
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const xMin = -6, xMax = 6, yMin = -4, yMax = 4;
+      const x = xMin + (mouseX / w) * (xMax - xMin);
+      const y = yMin + ((h - mouseY) / h) * (yMax - yMin);
+
+      document.getElementById('canvas-coords').innerText = `x : ${x.toFixed(2)} | y : ${y.toFixed(2)}`;
+    });
+  </script>
 </body>
 </html>
